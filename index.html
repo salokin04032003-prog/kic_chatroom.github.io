@@ -1,36 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Moodbot Pro | AI Interface</title>
 
-  <!-- Chatroom styles via jsDelivr -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/weberi/chatroom@master/dist/Chatroom.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/weberi/chatroom@master/index.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/weberi/chatroom@master/themes/theme1.css" />
+  
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --glass-bg: rgba(255, 255, 255, 0.1);
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden; /* Verhindert Scrollen des Hintergrunds */
+    }
+
+    /* Animierter Hintergrund */
+    body {
+      background: #0f172a; /* Dunkler Mitternachts-Ton */
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(102, 126, 234, 0.15) 0, transparent 50%), 
+        radial-gradient(at 100% 100%, rgba(118, 75, 162, 0.15) 0, transparent 50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Container Styling */
+    .chat-container {
+      width: 90%;
+      max-width: 500px;
+      height: 80vh;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px); /* Der Blur-Effekt */
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Chatroom Widget Anpassungen via CSS Overrides */
+    .chatroom {
+      border: none !important;
+      background: transparent !important;
+    }
+
+    .chatroom .chat-header {
+      background: var(--primary-gradient) !important;
+      padding: 20px !important;
+      font-weight: 600;
+    }
+
+    /* Fehler-Anzeige schöner machen */
+    #error-overlay {
+      padding: 20px;
+      color: #ff4d4d;
+      text-align: center;
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body>
-  <div class="chat-container"></div>
 
-  <!-- Chatroom script via jsDelivr -->
+  <div class="chat-container" id="chat-target">
+    </div>
+
   <script src="https://cdn.jsdelivr.net/gh/weberi/chatroom@master/dist/Chatroom.js"></script>
 
   <script>
-    // Fail-fast hint if the script didn't load
-    if (!window.Chatroom) {
-      document.body.insertAdjacentHTML('beforeend',
-        '<div style="padding:12px;color:#fff;background:#c00">Could not load Chatroom.js</div>');
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+      if (!window.Chatroom) {
+        document.getElementById('chat-target').innerHTML = 
+          '<div id="error-overlay">Connection Failed: Chatroom.js not found.</div>';
+        return;
+      }
 
-    var chatroom = new window.Chatroom({
-      host: "https://shiny-waddle-97v96rv9w4rpfx9pp-5005.app.github.dev",
-      title: "Moodbot",
-      container: document.querySelector(".chat-container"),
-      welcomeMessage: "Nice to meet you.",
-      speechRecognition: "en-US",
-      voiceLang: "en-US"
+      var chatroom = new window.Chatroom({
+        host: "https://shiny-waddle-97v96rv9w4rpfx9pp-5005.app.github.dev",
+        title: "✨ Moodbot AI",
+        container: document.querySelector(".chat-container"),
+        welcomeMessage: "Hi! Ich bin bereit. Was steht an?",
+        speechRecognition: "de-DE",
+        voiceLang: "de-DE",
+        placeholderText: "Frag mich etwas...",
+        bubbleTime: 400
+      });
+
+      chatroom.openChat();
     });
-    chatroom.openChat();
   </script>
 </body>
 </html>
